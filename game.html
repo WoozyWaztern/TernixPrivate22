@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ternix</title>
+    <link rel="shortcut icon" href="Images/ternixLogo.png" type="image/x-icon">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #ffffff;
+            color: #000;
+            min-height: 100vh;
+            font-size: 14px;
+        }
+        #top-nav {
+            background: #e8e8e8;
+            border-bottom: 2px solid #000;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            gap: 2px;
+            flex-wrap: wrap;
+        }
+        .nav-logo {
+            font-weight: bold;
+            font-size: 16px;
+            color: #0000aa;
+            margin-right: 12px;
+        }
+        .nav-item {
+            padding: 4px 9px;
+            font-size: 13px;
+            color: #000;
+            cursor: pointer;
+            text-decoration: none;
+            border: 1px solid transparent;
+            white-space: nowrap;
+        }
+        .nav-item:hover, .nav-item.active {
+            background: #316ac5;
+            color: white;
+        }
+        .nav-spacer { flex: 1; }
+        .nav-user { font-size: 12px; color: #444; margin-right: 8px; }
+        #content {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 20px 16px 40px;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0000aa;
+            margin-bottom: 14px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 4px;
+        }
+        #games-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        @media (max-width: 700px) {
+            #games-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 440px) {
+            #games-grid { grid-template-columns: 1fr; }
+        }
+        .game-card {
+            border: 2px solid #000;
+            background: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+        }
+        .game-card:hover { border-color: #0000aa; }
+        .game-cover, .game-cover-placeholder {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            display: block;
+            border-bottom: 1px solid #000;
+            background: #bbb;
+        }
+        .game-cover-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 12px;
+        }
+        .game-info {
+            padding: 8px 10px 6px;
+            flex: 1;
+        }
+        .game-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 4px;
+            color: #222;
+        }
+        .game-owner {
+            font-size: 12px;
+            color: #b8860b;
+            margin-bottom: 2px;
+        }
+        .game-active {
+            font-size: 11px;
+            color: #5c4033;
+            margin-bottom: 8px;
+        }
+        .game-play-btn {
+            display: block;
+            width: calc(100% - 16px);
+            margin: 0 8px 10px;
+            padding: 8px 0;
+            text-align: center;
+            background: linear-gradient(#7CFC00, #32CD32);
+            border: 2px solid #006400;
+            color: #003300;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .game-play-btn:hover {
+            background: linear-gradient(#98FB98, #00FF7F);
+        }
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px 20px;
+            color: #666;
+        }
+        .empty-state a { color: #0000aa; font-weight: bold; }
+
+        #game-popup {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        #game-popup.show { display: flex; }
+        .popup-box {
+            background: #fff;
+            border: 3px solid #000;
+            width: 420px;
+            max-width: 94vw;
+        }
+        .popup-header {
+            background: #000080;
+            color: white;
+            padding: 6px 10px;
+            font-weight: bold;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .popup-header button {
+            background: #c0c0c0;
+            border: 1px solid #000;
+            width: 18px;
+            height: 16px;
+            cursor: pointer;
+            font-size: 11px;
+            color: #000;
+        }
+        .popup-body { padding: 12px; }
+        .popup-cover {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            border: 1px solid #000;
+            margin-bottom: 10px;
+            background: #ddd;
+        }
+        .popup-title { font-size: 16px; font-weight: bold; margin-bottom: 4px; }
+        .popup-meta { font-size: 12px; color: #333; margin-bottom: 12px; }
+        .popup-owner { color: #b8860b; }
+        .popup-active { color: #5c4033; }
+        .popup-play {
+            display: block;
+            width: 100%;
+            padding: 10px 0;
+            cursor: pointer;
+            border: 2px solid #006400;
+            background: linear-gradient(#7CFC00, #32CD32);
+            color: #003300;
+            font-weight: bold;
+            font-size: 18px;
+            border-radius: 4px;
+        }
+        .popup-play:hover {
+            background: linear-gradient(#98FB98, #00FF7F);
+        }
+    </style>
+</head>
+<body>
+
+<nav id="top-nav">
+    <div class="nav-logo">TERNIX</div>
+    <a class="nav-item" href="Ternix Creators/index.html">Ternix Creators</a>
+    <div class="nav-item active">Best Games</div>
+    <div class="nav-item">Friends</div>
+    <div class="nav-item">Shop</div>
+    <a class="nav-item" href="page3.html">Help&amp;support</a>
+    <div class="nav-item">Catalog</div>
+    <div class="nav-item">Messages</div>
+    <div class="nav-item">Forum</div>
+    <a class="nav-item" href="#" id="nav-leave">Leave</a>
+    <div class="nav-spacer"></div>
+    <span class="nav-user" id="nav-user"></span>
+</nav>
+
+<div id="content">
+    <h2 class="section-title">Best Games</h2>
+    <div id="games-grid"></div>
+</div>
+
+<div id="game-popup">
+    <div class="popup-box">
+        <div class="popup-header">
+            <span id="popup-header-title">Game</span>
+            <button type="button" onclick="closePopup()">X</button>
+        </div>
+        <div class="popup-body">
+            <img id="popup-cover" class="popup-cover" src="" alt="" style="display:none;">
+            <div id="popup-cover-ph" class="game-cover-placeholder" style="margin-bottom:10px;border:1px solid #000;">No cover</div>
+            <div class="popup-title" id="popup-title"></div>
+            <div class="popup-meta">
+                <span class="popup-owner">Developer: <span id="popup-author"></span></span><br>
+                <span class="popup-active">Active players: <span id="popup-active">0</span></span>
+            </div>
+            <button class="popup-play" id="popup-play-btn" type="button">▶ PLAY</button>
+        </div>
+    </div>
+</div>
+
+<script>
+let selectedGame = null;
+
+const user =
+    localStorage.getItem("ternix_user") ||
+    localStorage.getItem("ternix_registered_user") ||
+    localStorage.getItem("ternix_creators_user");
+if (user) document.getElementById("nav-user").textContent = user;
+
+document.getElementById("nav-leave").addEventListener("click", (e) => {
+    e.preventDefault();
+    localStorage.removeItem("ternix_logged_in");
+    localStorage.removeItem("ternix_user");
+    localStorage.removeItem("ternix_creators_logged");
+    window.location.href = "index.html";
+});
+
+const games = (() => {
+    try {
+        const g = JSON.parse(localStorage.getItem("ternix_published_games") || "[]");
+        return Array.isArray(g) ? g : [];
+    } catch (e) { return []; }
+})();
+
+const grid = document.getElementById("games-grid");
+
+function goPlay(game) {
+    localStorage.setItem("ternix_current_game", JSON.stringify(game));
+    window.location.href = "play.html";
+}
+
+if (games.length === 0) {
+    grid.innerHTML = `
+        <div class="empty-state">
+            <p>No published games yet.</p>
+            <p style="margin-top:8px;"><a href="Ternix Creators/index.html">Go to Ternix Creators</a> and Publish a place.</p>
+        </div>
+    `;
+} else {
+    games.forEach(game => {
+        const card = document.createElement("div");
+        card.className = "game-card";
+        const cover = game.cover
+            ? `<img class="game-cover" src="${game.cover}" alt="">`
+            : `<div class="game-cover-placeholder">No cover</div>`;
+        card.innerHTML = `
+            ${cover}
+            <div class="game-info">
+                <div class="game-title">${esc(game.title)}</div>
+                <div class="game-owner">by ${esc(game.author || "Unknown")}</div>
+                <div class="game-active">Active players: ${game.activePlayers || 0}</div>
+            </div>
+            <button class="game-play-btn" type="button">▶ PLAY</button>
+        `;
+        card.querySelector(".game-play-btn").onclick = (e) => {
+            e.stopPropagation();
+            goPlay(game);
+        };
+        card.onclick = () => openPopup(game);
+        grid.appendChild(card);
+    });
+}
+
+function esc(s) {
+    return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+}
+
+function openPopup(game) {
+    selectedGame = game;
+    document.getElementById("popup-header-title").textContent = game.title;
+    document.getElementById("popup-title").textContent = game.title;
+    document.getElementById("popup-author").textContent = game.author || "Unknown";
+    document.getElementById("popup-active").textContent = game.activePlayers || 0;
+    const img = document.getElementById("popup-cover");
+    const ph = document.getElementById("popup-cover-ph");
+    if (game.cover) {
+        img.src = game.cover;
+        img.style.display = "block";
+        ph.style.display = "none";
+    } else {
+        img.style.display = "none";
+        ph.style.display = "flex";
+    }
+    document.getElementById("game-popup").classList.add("show");
+}
+
+function closePopup() {
+    document.getElementById("game-popup").classList.remove("show");
+    selectedGame = null;
+}
+
+document.getElementById("popup-play-btn").onclick = () => {
+    if (!selectedGame) return;
+    goPlay(selectedGame);
+};
+
+document.getElementById("game-popup").addEventListener("click", (e) => {
+    if (e.target.id === "game-popup") closePopup();
+});
+
+function resizeCursorImage(imgUrl, callback) {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = imgUrl;
+    img.onload = function () {
+        const c = document.createElement("canvas");
+        c.width = 90; c.height = 90;
+        const ctx = c.getContext("2d");
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(img, 0, 0, 90, 90);
+        callback(c.toDataURL("image/png"));
+    };
+    img.onerror = function () {
+        img.removeAttribute("crossOrigin");
+        img.src = imgUrl;
+    };
+}
+window.addEventListener("DOMContentLoaded", () => {
+    resizeCursorImage("./cursor/Ternix 3 cursor.png", (url3) => {
+        resizeCursorImage("./cursor/Ternix 1 cursor.png", (urlDef) => {
+            const s = document.createElement("style");
+            s.innerHTML = `
+                * { cursor: url('${urlDef}') 0 0, auto !important; }
+                a, a *, button, button *, input, select, textarea, img, .nav-item, .game-card, .game-play-btn {
+                    cursor: url('${url3}') 0 0, pointer !important;
+                }
+            `;
+            document.head.appendChild(s);
+        });
+    });
+});
+</script>
+</body>
+</html>

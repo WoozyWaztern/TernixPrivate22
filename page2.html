@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Ternix</title>
+
+    <link
+        rel="shortcut icon"
+        href="Images/ternixLogo.png"
+        type="image/x-icon"
+    >
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body class="menu-page">
+
+    <div class="menu-row">
+
+        <a
+            href="messages.html"
+            class="menu-link"
+        >
+            Messages
+        </a>
+
+        <a
+            href="support.html"
+            class="menu-link"
+        >
+            Ternix Help&Support
+        </a>
+
+        <a
+            href="catalog.html"
+            class="menu-link"
+        >
+            Catalog
+        </a>
+
+        <a
+            href="coins.html"
+            class="menu-link"
+        >
+            Coins Shop
+        </a>
+
+        <a
+            href="creators.html"
+            class="menu-link"
+        >
+            Ternix Creators
+        </a>
+
+        <a
+            href="best-games.html"
+            class="menu-link"
+        >
+            Best Games
+        </a>
+
+        <a
+            href="friends.html"
+            class="menu-link"
+        >
+            Friends
+        </a>
+
+    </div>
+
+
+    <!-- PLAY -->
+
+    <a href="game.html">
+
+        <img
+            src="Images/ternix play button.png"
+            alt="Play"
+            class="play-button"
+        >
+
+    </a>
+
+
+<script>
+
+
+
+if (
+    sessionStorage.getItem(
+        "ternixLoggedIn"
+    ) !== "true"
+) {
+
+    window.location.replace(
+        "login.html"
+    );
+
+}
+
+</script>
+
+</body>
+</html>

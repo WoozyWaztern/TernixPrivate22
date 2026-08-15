@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Ternix</title>
+
+    <link
+        rel="stylesheet"
+        href="./style.css"
+    >
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.179.1/examples/jsm/"
+        }
+    }
+    </script>
+
+</head>
+
+
+<body>
+
+    <div id="game-ui">
+
+        <!-- CHAT HISTORY -->
+
+        <div id="chat-messages"></div>
+
+
+        <!-- CHAT BAR -->
+
+        <div
+            id="chat-bar" 
+            tabindex="0" 
+            style="width: 106%;"
+        >
+
+            <span id="chat-placeholder">
+                Press here or "/" key to chat
+            </span>
+
+
+            <input
+                id="chat-input"
+                type="text"
+                maxlength="50"
+                autocomplete="off"
+                spellcheck="false"
+            >
+
+        </div>
+
+    </div>
+
+
+    <script
+        type="module"
+        src="./game.js"
+    ></script>
+
+</body>
+
+</html>

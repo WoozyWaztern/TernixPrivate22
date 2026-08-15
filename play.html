@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ternix - Playing</title>
+    <link rel="shortcut icon" href="Images/ternixLogo.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.1/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.1/examples/jsm/",
+            "peerjs": "https://esm.sh/peerjs@1.5.4"
+        }
+    }
+    </script>
+    <style>
+        #mp-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.72);
+            z-index: 5000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: auto;
+        }
+        #mp-box {
+            background: #ece9d8;
+            border: 3px solid #000;
+            width: 380px;
+            max-width: 92vw;
+            padding: 18px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        #mp-box h2 {
+            background: #000080;
+            color: #fff;
+            margin: -18px -18px 14px -18px;
+            padding: 8px 12px;
+            font-size: 15px;
+        }
+        #mp-box label { display: block; font-size: 13px; margin-bottom: 4px; }
+        #mp-box input {
+            width: 100%;
+            padding: 6px 8px;
+            font-size: 14px;
+            margin-bottom: 12px;
+            border: 1px solid #555;
+            box-sizing: border-box;
+        }
+        #mp-box .row { display: flex; gap: 8px; margin-top: 4px; }
+        #mp-box button {
+            flex: 1;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #333;
+            background: #efefef;
+            cursor: pointer;
+        }
+        #mp-box button.primary { background: #90ee90; font-weight: bold; }
+        #mp-status {
+            font-size: 12px;
+            color: #333;
+            margin-top: 10px;
+            min-height: 18px;
+        }
+        #mp-room-code {
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-align: center;
+            padding: 10px;
+            background: #fff;
+            border: 2px solid #000080;
+            margin: 8px 0 12px;
+            display: none;
+        }
+        #mp-hud {
+            position: fixed;
+            top: 40px;
+            right: 8px;
+            background: rgba(0,0,0,0.55);
+            color: #fff;
+            font-size: 12px;
+            padding: 6px 10px;
+            border-radius: 2px;
+            z-index: 150;
+            pointer-events: none;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container"></div>
+
+    <div id="game-ui">
+        <div id="chat-messages"></div>
+        <div id="chat-bar">
+            <div id="chat-placeholder">Click here or press / to chat</div>
+            <input type="text" id="chat-input" maxlength="120" autocomplete="off" spellcheck="false">
+        </div>
+        <button id="game-exit">Exit</button>
+        <div id="mp-hud">Solo</div>
+    </div>
+
+    <div id="mp-overlay">
+        <div id="mp-box">
+            <h2>Multiplayer</h2>
+            <p style="font-size:13px;margin-bottom:12px;">Play with friends. Host creates a room, friends join with the code.</p>
+            <div id="mp-room-code"></div>
+            <label>Your name (optional)</label>
+            <input type="text" id="mp-name" maxlength="20" placeholder="Player">
+            <label>Room code (to join)</label>
+            <input type="text" id="mp-join-code" maxlength="8" placeholder="e.g. AB12XY" style="text-transform:uppercase;">
+            <div class="row">
+                <button type="button" id="mp-host" class="primary">Create Room</button>
+                <button type="button" id="mp-join">Join Room</button>
+            </div>
+            <div class="row" style="margin-top:8px;">
+                <button type="button" id="mp-solo">Play Solo</button>
+            </div>
+            <div id="mp-status"></div>
+        </div>
+    </div>
+
+    <script type="module" src="play.js"></script>
+</body>
+</html>
