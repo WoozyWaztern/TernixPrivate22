@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ternix Creators</title>
+    <link rel="stylesheet" href="studio.css">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.1/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.1/examples/jsm/"
+        }
+    }
+    </script>
+</head>
+<body>
+
+<div id="title-bar">
+    <span id="place-title">Ternix Creators - Untitled Place</span>
+    <button class="win-btn" id="btn-close-studio" type="button">X</button>
+</div>
+
+<div id="menu-bar">
+    <div class="menu-item">
+        File
+        <div class="dropdown">
+            <div class="dropdown-item" id="menu-save">Save</div>
+            <div class="dropdown-item" id="menu-publish">Publish</div>
+            <div class="dropdown-separator"></div>
+            <div class="dropdown-item" id="menu-exit">Exit</div>
+        </div>
+    </div>
+    <div class="tool-btn active" data-tool="select">Select</div>
+    <div class="tool-btn" data-tool="block">Block</div>
+    <div class="tool-btn" data-tool="move">Move</div>
+    <div class="tool-btn" data-tool="delete">Delete</div>
+    <div class="tool-btn" data-tool="world">World</div>
+</div>
+
+<div id="main">
+    <div id="viewport">
+        <div id="game-container"></div>
+        <div id="play-overlay">
+            <button id="btn-play" type="button">Play</button>
+            <button id="btn-exit-play" type="button">Exit Play</button>
+        </div>
+    </div>
+
+    <div id="right-panel">
+        <div id="explorer">
+            <div class="panel-header">Explorer</div>
+            <div id="explorer-tree">
+                <div class="tree-item">World</div>
+                <div class="tree-item indent">Camera</div>
+                <div class="tree-item indent" id="blocks-header">Blocks (0)</div>
+            </div>
+        </div>
+        <div id="properties">
+            <div class="panel-header">Properties</div>
+            <div id="properties-content">
+                <div style="padding:6px;color:#666;">Select an object</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="bottom-bar">
+    <span id="status-text">Ready - Select Block tool and click to place</span>
+</div>
+
+<div class="modal-overlay" id="save-modal">
+    <div class="modal">
+        <h2>Save Place</h2>
+        <label>Place name</label>
+        <input type="text" id="save-name" placeholder="My Place" maxlength="40">
+        <div class="modal-actions">
+            <button type="button" id="save-cancel">Cancel</button>
+            <button type="button" id="save-confirm">Save</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="publish-modal">
+    <div class="modal">
+        <h2>Publish Game</h2>
+        <label>Game title</label>
+        <input type="text" id="publish-name" placeholder="My Game" maxlength="40">
+        <label>Cover image (1920 x 1080 recommended)</label>
+        <input type="file" id="publish-cover" accept="image/*">
+        <div class="cover-preview" id="cover-preview">No image selected</div>
+        <p style="font-size:11px;color:#444;margin-bottom:8px;">Each account can have only 1 published game. Publishing replaces your previous one.</p>
+        <div class="modal-actions">
+            <button type="button" id="publish-cancel">Cancel</button>
+            <button type="button" id="publish-confirm">Publish</button>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="studio.js"></script>
+</body>
+</html>
